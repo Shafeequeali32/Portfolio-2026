@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: Shafeequeali32/Portfolio-2026
+  repo: shafeequeali32/Portfolio-2026
   branch: main
 
 media_folder: "assets/images"
