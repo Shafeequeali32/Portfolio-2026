@@ -1,1 +1,23 @@
+backend:
+  name: git-gateway
+  branch: main
 
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+collections:
+  - name: "projects"
+    label: "Jewellery Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Subtitle", name: "subtitle", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["Rings", "Pendants", "Bangles", "Earrings"] }
+      - { label: "Service", name: "service", widget: "string", default: "Jewellery CAD + KeyShot" }
+      - { label: "Metal", name: "metal", widget: "string", default: "Platinum" }
+      - { label: "Stone", name: "stone", widget: "string", default: "1.50ct Round Brilliant" }
+      - { label: "Est. Weight (g)", name: "weight", widget: "number", value_type: "float" }
+      - { label: "Hero Render", name: "image", widget: "image" }
+      - { label: "Description", name: "body", widget: "markdown" }
