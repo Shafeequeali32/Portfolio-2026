@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mohammed Shafeeque — Jewellery CAD Designer & 3D Visualizer</title>
+  
+  <!-- Google Fonts: Luxury Editorial Serif & Clean Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-alt: #f8f8fb;
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --text-main: #111111;
+      --text-muted: #666675;
+      --text-light: #9999a8;
+      --gold: #c5a059;
+      --gold-dark: #a07e38;
+      --gold-light: #f4ecdc;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-focus: #111111;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.04);
+      --shadow-hover: 0 12px 36px rgba(0, 0, 0, 0.08);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom Slim Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    /* Main Content Wrapper */
+    #app-container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Container Utilities */
+    .container {
+      width: 100%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Top Sticky Header */
+    header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-name {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    .logo-sub {
+      font-size: 10px;
+      letter-spacing: 1.6px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Desktop Navigation */
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      transition: var(--transition);
+      position: relative;
+      padding: 6px 0;
+      cursor: pointer;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-main);
+    }
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--text-main);
+      border-radius: 2px;
+    }
+
+    /* Header Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .btn-dark {
+      background: var(--text-main);
+      color: #ffffff;
+      border-color: var(--text-main);
+    }
+    .btn-dark:hover {
+      background: #2b2b2b;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-main);
+      border-color: var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--text-main);
+      background: #ffffff;
+      transform: translateY(-2px);
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: #ffffff;
+    }
+    .btn-gold:hover {
+      background: var(--gold-dark);
+      transform: translateY(-2px);
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-btn {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .mobile-menu-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-main);
+      transition: var(--transition);
+    }
+
+    /* Mobile Drawer */
+    #mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 76px;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 999;
+      box-shadow: var(--shadow-hover);
+    }
+    #mobile-drawer.open {
+      display: flex;
+    }
+    #mobile-drawer .nav-link {
+      font-size: 16px;
+    }
+
+    /* View Switcher Container */
+    main#main-content {
+      flex: 1;
+      width: 100%;
+    }
+    .page-section {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .page-section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ----------------------------------------------------
+       PAGE 1: HOME SECTIONS
+    ---------------------------------------------------- */
+    /* Hero Section matching reference */
+    .hero-section {
+      min-height: calc(100vh - 76px);
+      display: flex;
+      align-items: center;
+      padding: 40px 0 60px;
+      position: relative;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 48px;
+    }
+    .hero-left {
+      max-width: 600px;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 20px;
+      padding: 6px 14px;
+      background: var(--gold-light);
+      border-radius: var(--radius-full);
+    }
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: 54px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--text-main);
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-dark);
+    }
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      font-weight: 400;
+    }
+    .hero-specs {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 34px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-specs-exp {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+    .hero-specs-list {
+      font-size: 13px;
+      color: var(--text-muted);
+      border-left: 1px solid var(--border);
+      padding-left: 16px;
+    }
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Hero Right - Portrait with Graphic Accent */
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .portrait-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .portrait-bg-circle {
+      position: absolute;
+      inset: -15px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(197, 160, 89, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+      z-index: 1;
+    }
+    .portrait-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+      border: 3px solid #ffffff;
+    }
+    /* Rotating Designer Stamp Badge matching reference */
+    .rotating-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 110px;
+      height: 110px;
+      z-index: 5;
+      animation: rotateSlow 24s linear infinite;
+    }
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Scroll Down Indicator */
+    .scroll-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 40px;
+      cursor: pointer;
+    }
+    .scroll-indicator svg {
+      animation: bounce 1.8s infinite ease-in-out;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* Intro Strip Below Hero */
+    .intro-strip {
+      padding: 60px 0;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .intro-text {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 24px;
+      line-height: 1.55;
+      color: var(--text-main);
+      font-weight: 400;
+    }
+
+    /* Featured Services Cards Row (matching reference) */
+    .section {
+      padding: 90px 0;
+      position: relative;
+    }
+    .section-header {
+      margin-bottom: 48px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .section-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 38px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      color: var(--text-main);
+    }
+    .section-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .section-link:hover {
+      color: var(--gold-dark);
+      gap: 12px;
+    }
+
+    /* Service Cards Grid (4 in a row like reference) */
+    .services-grid-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .service-card-item {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 32px 24px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-subtle);
+    }
+    .service-card-item:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: var(--shadow-hover);
+    }
+    .service-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: var(--gold-dark);
+    }
+    .service-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+    .service-card-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Featured Works Grid (matching reference) */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .project-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-subtle);
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+    .project-img-wrap {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #f4f4f7;
+      position: relative;
+    }
+    .project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .project-card:hover .project-img {
+      transform: scale(1.06);
+    }
+    .project-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .project-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .project-cat {
+      font-size: 12px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+    .project-action {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* About & Stats Section matching reference bottom banner */
+    .about-preview-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 90px 0;
+    }
+    .about-preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-quote {
+      font-family: var(--font-serif);
+      font-size: 34px;
+      line-height: 1.25;
+      color: var(--text-main);
+      margin-bottom: 20px;
+    }
+    .about-bio-text {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .stat-card {
+      background: var(--bg-alt);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .stat-icon {
+      font-size: 28px;
+      color: var(--gold-dark);
+    }
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Software / Expertise Bar */
+    .software-bar {
+      padding: 40px 0;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .software-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .software-tags {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .software-pill {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
+    }
+
+    /* Reviews Preview */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .review-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-subtle);
+    }
+    .review-stars {
+      color: #e6a817;
+      font-size: 16px;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+    .review-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .review-author {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .review-role {
+      font-size: 12px;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* Final CTA Banner (Soft Tint Container matching reference) */
+    .cta-banner {
+      background: linear-gradient(135deg, #eeeaf8 0%, #f6f3ff 100%);
+      border-radius: var(--radius-lg);
+      padding: 48px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 40px 0 80px;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+    .cta-left h3 {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: #6c5ce7;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .cta-left h2 {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* ----------------------------------------------------
+       PAGE 2: ABOUT FULL PAGE
+    ---------------------------------------------------- */
+    .page-header {
+      padding: 70px 0 40px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+    }
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 46px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .page-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .about-main-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 56px;
+      align-items: flex-start;
+      margin: 60px 0;
+    }
+    .about-photo-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-subtle);
+    }
+    .about-photo-card img {
+      width: 100%;
+      display: block;
+    }
+    .about-pillars {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 30px;
+    }
+    .pillar-item {
+      background: var(--bg-alt);
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--gold);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    /* Workflow Stepper (01 to 06) */
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .workflow-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      position: relative;
+    }
+    .workflow-num {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .workflow-step-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .workflow-step-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    /* ----------------------------------------------------
+       PAGE 3: PORTFOLIO & CATEGORY FILTERS
+    ---------------------------------------------------- */
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 40px 0 50px;
+    }
+    .filter-btn {
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--text-main);
+      color: #ffffff;
+      border-color: var(--text-main);
+    }
+
+    /* ----------------------------------------------------
+       PAGE 4: SERVICES
+    ---------------------------------------------------- */
+    .services-full-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin: 60px 0;
+    }
+    .service-full-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition);
+    }
+    .service-full-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+      box-shadow: var(--shadow-hover);
+    }
+    .service-full-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+    .service-full-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .service-feature-list {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+    .service-feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .service-feature-list li::before {
+      content: '✓';
+      color: var(--gold-dark);
+      font-weight: bold;
+    }
+
+    /* ----------------------------------------------------
+       PAGE 5: WORKS & INTERACTIVE BEFORE/AFTER
+    ---------------------------------------------------- */
+    .before-after-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin: 50px 0;
+      box-shadow: var(--shadow-hover);
+    }
+    .ba-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    .ba-tab {
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      background: var(--bg-alt);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .ba-tab.active {
+      background: var(--gold);
+      color: #ffffff;
+      border-color: var(--gold);
+    }
+    .ba-display {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #111;
+      position: relative;
+    }
+    .ba-display img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .ba-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ----------------------------------------------------
+       PAGE 6: REVIEWS CATEGORIES
+    ---------------------------------------------------- */
+    .reviews-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 40px 0;
+    }
+    .reviews-full-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-bottom: 70px;
+    }
+
+    /* ----------------------------------------------------
+       PAGE 7: CONTACT & PROJECT ENQUIRY FORM
+    ---------------------------------------------------- */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 60px;
+      margin: 60px 0 80px;
+    }
+    .contact-info-panel {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-subtle);
+    }
+    .contact-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin: 30px 0;
+    }
+    .contact-item-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .contact-item-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .contact-item-value a {
+      color: var(--text-main);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .contact-item-value a:hover {
+      color: var(--gold-dark);
+    }
+
+    /* Contact Form */
+    .contact-form-panel {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      box-shadow: var(--shadow-hover);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-main);
+    }
+    .form-control {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      background: var(--bg-alt);
+      color: var(--text-main);
+      transition: var(--transition);
+      outline: none;
+    }
+    .form-control:focus {
+      background: #ffffff;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+    textarea.form-control {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    /* ----------------------------------------------------
+       INDIVIDUAL PROJECT MODAL (DEEP DIVE CASE STUDY)
+    ---------------------------------------------------- */
+    #project-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 40px 20px;
+      animation: modalFadeIn 0.3s ease;
+    }
+    #project-modal.active {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      background: #ffffff;
+      width: 100%;
+      max-width: 1060px;
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    }
+    .modal-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .modal-close:hover {
+      background: var(--text-main);
+      color: #ffffff;
+    }
+    .modal-hero-img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      background: #f8f8fb;
+      border-radius: var(--radius-md);
+      margin: 28px 0;
+    }
+    .modal-specs-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      background: var(--bg-alt);
+      padding: 20px 24px;
+      border-radius: var(--radius-md);
+      margin-bottom: 32px;
+      border: 1px solid var(--border);
+    }
+    .modal-spec-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-spec-key {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+    .modal-spec-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+    .modal-cad-views {
+      margin: 40px 0;
+    }
+    .modal-cad-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .modal-cad-tab {
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      cursor: pointer;
+    }
+    .modal-cad-tab.active {
+      background: var(--text-main);
+      color: #ffffff;
+    }
+    .modal-cad-display {
+      width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: #0f1016;
+    }
+    .modal-cad-display img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ----------------------------------------------------
+       FOOTER (Consistent on Every Page)
+    ---------------------------------------------------- */
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 70px 0 30px;
+      position: relative;
+      z-index: 10;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+    .footer-bio p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 14px;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+    .footer-col-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .footer-links a:hover {
+      color: var(--text-main);
+      transform: translateX(3px);
+    }
+    .footer-bottom {
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 1024px) {
+      .services-grid-row, .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .services-full-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero-grid, .about-main-grid, .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 42px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      nav.nav-links, .header-actions .btn {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: flex;
+      }
+      .services-grid-row, .works-grid, .stats-grid, .reviews-grid, .workflow-grid, .services-full-grid, .reviews-full-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 34px;
+      }
+      .cta-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+
+    <!-- Global Header (Consistent on Every Page) -->
+    <header id="site-header">
+      <div class="container header-inner">
+        <a class="logo" onclick="navigateTo('/')">
+          <div class="logo-mark">MS</div>
+          <div class="logo-text">
+            <span class="logo-name">Mohammed Shafeeque</span>
+            <span class="logo-sub">Jewellery CAD Designer</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-links">
+          <a class="nav-link active" data-path="/" onclick="navigateTo('/')">Home</a>
+          <a class="nav-link" data-path="/about" onclick="navigateTo('/about')">About</a>
+          <a class="nav-link" data-path="/portfolio" onclick="navigateTo('/portfolio')">Portfolio</a>
+          <a class="nav-link" data-path="/services" onclick="navigateTo('/services')">Services</a>
+          <a class="nav-link" data-path="/works" onclick="navigateTo('/works')">Works</a>
+          <a class="nav-link" data-path="/reviews" onclick="navigateTo('/reviews')">Reviews</a>
+          <a class="nav-link" data-path="/contact" onclick="navigateTo('/contact')">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="btn btn-dark" onclick="navigateTo('/contact')">
+            <span>Get a Quote</span>
+            <span>→</span>
+          </button>
+          <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Drawer Navigation -->
+      <div id="mobile-drawer">
+        <a class="nav-link" data-path="/" onclick="navigateTo('/'); toggleMobileMenu();">Home</a>
+        <a class="nav-link" data-path="/about" onclick="navigateTo('/about'); toggleMobileMenu();">About</a>
+        <a class="nav-link" data-path="/portfolio" onclick="navigateTo('/portfolio'); toggleMobileMenu();">Portfolio</a>
+        <a class="nav-link" data-path="/services" onclick="navigateTo('/services'); toggleMobileMenu();">Services</a>
+        <a class="nav-link" data-path="/works" onclick="navigateTo('/works'); toggleMobileMenu();">Works</a>
+        <a class="nav-link" data-path="/reviews" onclick="navigateTo('/reviews'); toggleMobileMenu();">Reviews</a>
+        <a class="nav-link" data-path="/contact" onclick="navigateTo('/contact'); toggleMobileMenu();">Contact</a>
+        <button class="btn btn-dark" style="margin-top:10px;" onclick="navigateTo('/contact'); toggleMobileMenu();">Get a Quote →</button>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Pages Container -->
+    <main id="main-content">
+
+      <!-- ==============================================
+           PAGE 1: HOME
+      =============================================== -->
+      <section id="page-home" class="page-section active">
+        <!-- Hero Section matching reference -->
+        <div class="hero-section">
+          <div class="container">
+            <div class="hero-grid">
+              <div class="hero-left">
+                <span class="hero-badge">Hi, I'm Mohammed Shafeeque</span>
+                <h1 class="hero-title">Jewellery CAD Designer &amp; <em>3D Visualizer.</em></h1>
+                <p class="hero-sub">Transforming jewellery concepts into precise, production-ready 3D designs and photorealistic visualizations.</p>
+                
+                <div class="hero-specs">
+                  <div class="hero-specs-exp">8+ Years Experience</div>
+                  <div class="hero-specs-list">Jewellery CAD • 3D Modelling • Rendering • Visualization</div>
+                </div>
+
+                <div class="hero-cta">
+                  <button class="btn btn-dark" onclick="navigateTo('/portfolio')">View Portfolio →</button>
+                  <button class="btn btn-outline" onclick="navigateTo('/contact')">Contact Me</button>
+                </div>
+
+                <div class="scroll-indicator" onclick="window.scrollBy({top: 600, behavior: 'smooth'})">
+                  <span>Scroll Down</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+                </div>
+              </div>
+
+              <!-- Hero Right: Clean Luxury Designer Portrait with Rotating Stamp -->
+              <div class="hero-right">
+                <div class="portrait-wrap">
+                  <div class="portrait-bg-circle"></div>
+                  <img src="./assets/portrait.jpg" alt="Mohammed Shafeeque — Jewellery CAD Designer" class="portrait-img">
+                  <!-- Circular Stamp SVG -->
+                  <svg class="rotating-badge" viewBox="0 0 120 120">
+                    <path id="circlePath" fill="none" stroke="none" d="M 60, 60 m -46, 0 a 46,46 0 1,1 92,0 a 46,46 0 1,1 -92,0" />
+                    <text font-size="9.5" font-weight="700" letter-spacing="2.2" fill="#111111" text-transform="uppercase">
+                      <textPath href="#circlePath" startOffset="0%">• MOHAMMED SHAFEEQUE • JEWELLERY CAD DESIGNER </textPath>
+                    </text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Below Hero Introduction -->
+        <div class="intro-strip">
+          <div class="container">
+            <p class="intro-text">
+              "I’m a professional Jewellery CAD Designer, Jewellery Designer, and 3D Visualizer specializing in transforming sketches, references, and concepts into detailed 3D jewellery models, production-ready CAD files, and photorealistic visualizations."
+            </p>
+          </div>
+        </div>
+
+        <!-- Featured Services (Row of Cards matching reference) -->
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <div>
+                <div class="section-tag">Capabilities</div>
+                <h2 class="section-title">Featured Services</h2>
+              </div>
+              <a class="section-link" onclick="navigateTo('/services')">Explore All Services →</a>
+            </div>
+
+            <div class="services-grid-row">
+              <div class="service-card-item">
+                <div class="service-icon-box">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+                </div>
+                <h3 class="service-card-title">Jewellery CAD Design</h3>
+                <p class="service-card-desc">Production-ready jewellery modelling with exact metal thickness, prong geometry, and casting tolerances.</p>
+              </div>
+
+              <div class="service-card-item">
+                <div class="service-icon-box">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                </div>
+                <h3 class="service-card-title">3D Jewellery Modelling</h3>
+                <p class="service-card-desc">Detailed rings, earrings, pendants, bracelets, bangles, and bridal collections built to millimeter accuracy.</p>
+              </div>
+
+              <div class="service-card-item">
+                <div class="service-icon-box">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                </div>
+                <h3 class="service-card-title">Photorealistic Rendering</h3>
+                <p class="service-card-desc">Studio-grade KeyShot renders with physically-accurate diamonds, gemstones, and fine precious metal finishes.</p>
+              </div>
+
+              <div class="service-card-item">
+                <div class="service-icon-box">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                </div>
+                <h3 class="service-card-title">360° Animation</h3>
+                <p class="service-card-desc">Silky smooth interactive product turntable animations and cinematic jewellery showcase reels.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Works / Selected Projects matching reference -->
+        <div class="section" style="padding-top: 20px;">
+          <div class="container">
+            <div class="section-header">
+              <div>
+                <div class="section-tag">Featured Work</div>
+                <h2 class="section-title">Selected Projects</h2>
+              </div>
+              <a class="section-link" onclick="navigateTo('/portfolio')">View All Projects →</a>
+            </div>
+
+            <div class="works-grid">
+              <!-- Project 1 -->
+              <div class="project-card" onclick="openProjectModal('halo-ring')">
+                <div class="project-img-wrap">
+                  <img src="./assets/diamond_halo_ring.jpg" alt="Diamond Halo Ring" class="project-img">
+                </div>
+                <div class="project-info">
+                  <div class="project-name">Diamond Halo Ring</div>
+                  <div class="project-cat">Jewellery CAD + Photorealistic Rendering</div>
+                  <div class="project-desc">Micro-pave halo engagement ring with CAD tolerances for cast-in-place diamond setting.</div>
+                  <div class="project-action">View Project →</div>
+                </div>
+              </div>
+
+              <!-- Project 2 -->
+              <div class="project-card" onclick="openProjectModal('emerald-pendant')">
+                <div class="project-img-wrap">
+                  <img src="./assets/royal_emerald_pendant.jpg" alt="Royal Emerald Pendant" class="project-img">
+                </div>
+                <div class="project-info">
+                  <div class="project-name">Royal Emerald Pendant</div>
+                  <div class="project-cat">CAD Modelling + Product Visualization</div>
+                  <div class="project-desc">Intricate 18K yellow gold filigree scrollwork pendant with pear emerald center stone.</div>
+                  <div class="project-action">View Project →</div>
+                </div>
+              </div>
+
+              <!-- Project 3: The 3D Scroll Jewellery -->
+              <div class="project-card" onclick="openProjectModal('filigree-crown')">
+                <div class="project-img-wrap">
+                  <img src="./ezgif-frame-179.jpg" alt="Filigree Crown Ring" class="project-img">
+                </div>
+                <div class="project-info">
+                  <div class="project-name">Filigree Crown Ring</div>
+                  <div class="project-cat">Organic 3D Sculpt + 360° Animation</div>
+                  <div class="project-desc">Bespoke scrollwork crown band modeled with organic curves and 179-frame turntable animation.</div>
+                  <div class="project-action">View Project →</div>
+                </div>
+              </div>
+
+              <!-- Project 4 -->
+              <div class="project-card" onclick="openProjectModal('filigree-bangle')">
+                <div class="project-img-wrap">
+                  <img src="./assets/gold_filigree_bangle.jpg" alt="Gold Filigree Bangle" class="project-img">
+                </div>
+                <div class="project-info">
+                  <div class="project-name">Royal Filigree Bangle</div>
+                  <div class="project-cat">Production CAD &amp; Hinge Assembly</div>
+                  <div class="project-desc">Master craftsman hinged bangle bracelet featuring arabesque openwork and micro pave diamonds.</div>
+                  <div class="project-action">View Project →</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Teaser & Stats Section matching reference -->
+        <div class="about-preview-section">
+          <div class="container">
+            <div class="about-preview-grid">
+              <div>
+                <div class="section-tag">About Me</div>
+                <h3 class="about-quote">"Design is not just what it looks like, it's how it casts, sets, and finishes."</h3>
+                <p class="about-bio-text">
+                  With 8+ years specializing exclusively in high-end jewellery CAD and technical visualization, I bridge the gap between creative concept sketches and flawless manufacturing reality. Every prong, gallery, and hollow is calculated to optimize metal weight, durability, and stone security.
+                </p>
+                <button class="btn btn-outline" onclick="navigateTo('/about')">Read Full Profile →</button>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-icon">⌛</div>
+                  <div>
+                    <div class="stat-num">8+</div>
+                    <div class="stat-label">Years Experience</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon">💎</div>
+                  <div>
+                    <div class="stat-num">450+</div>
+                    <div class="stat-label">CAD Models Delivered</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon">⚙️</div>
+                  <div>
+                    <div class="stat-num">100%</div>
+                    <div class="stat-label">Manufacturing Feasible</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon">🌍</div>
+                  <div>
+                    <div class="stat-num">35+</div>
+                    <div class="stat-label">Global Jewellery Brands</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Software / Expertise Strip -->
+        <div class="software-bar">
+          <div class="container">
+            <div class="software-label">Production Software Stack</div>
+            <div class="software-tags">
+              <span class="software-pill">Rhino 3D (Rhinoceros)</span>
+              <span class="software-pill">MatrixGold / Gemvision Matrix</span>
+              <span class="software-pill">ZBrush (Organic Sculpting)</span>
+              <span class="software-pill">KeyShot (3D Rendering)</span>
+              <span class="software-pill">Adobe Photoshop</span>
+              <span class="software-pill">After Effects (360° Animation)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Preview -->
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <div>
+                <div class="section-tag">Client Feedback</div>
+                <h2 class="section-title">Client Reviews</h2>
+              </div>
+              <a class="section-link" onclick="navigateTo('/reviews')">View All Reviews →</a>
+            </div>
+
+            <div class="reviews-grid">
+              <div class="review-card">
+                <div>
+                  <div class="review-stars">★★★★★</div>
+                  <p class="review-text">"Mohammed's CAD models are always 100% production ready. The stone seats fit our diamonds with zero recutting, and his KeyShot renders help us sell custom pieces before casting."</p>
+                </div>
+                <div>
+                  <div class="review-author">Bespoke Fine Jeweller</div>
+                  <div class="review-role">Mayfair, London, UK</div>
+                </div>
+              </div>
+
+              <div class="review-card">
+                <div>
+                  <div class="review-stars">★★★★★</div>
+                  <p class="review-text">"Outstanding attention to structural durability and prong geometry. We sent complex hand sketches and received perfect Rhino CAD files and 360° animations within 48 hours."</p>
+                </div>
+                <div>
+                  <div class="review-author">Luxury Atelier Studio</div>
+                  <div class="review-role">Dubai, UAE</div>
+                </div>
+              </div>
+
+              <div class="review-card">
+                <div>
+                  <div class="review-stars">★★★★★</div>
+                  <p class="review-text">"The best jewellery CAD visualizer we've partnered with. Highly communicative, understands casting shrinkage and micro-pave tolerances instinctively."</p>
+                </div>
+                <div>
+                  <div class="review-author">High Jewelry Manufacturer</div>
+                  <div class="review-role">New York, USA</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Closing CTA Banner matching reference -->
+            <div class="cta-banner">
+              <div class="cta-left">
+                <h3>Have a Jewellery Project in Mind?</h3>
+                <h2>Let's turn your idea into a professional 3D jewellery design.</h2>
+              </div>
+              <button class="btn btn-dark" onclick="navigateTo('/contact')">Start a Project →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==============================================
+           PAGE 2: ABOUT
+      =============================================== -->
+      <section id="page-about" class="page-section">
+        <div class="page-header">
+          <div class="container">
+            <span class="hero-badge">Professional Profile</span>
+            <h1 class="page-title">About Mohammed Shafeeque</h1>
+            <p class="page-desc">Jewellery CAD Designer, Jewellery Designer, and 3D Visualizer with 8+ years of expertise in turning fine jewellery concepts into precision manufacturing files.</p>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="about-main-grid">
+            <div class="about-photo-card">
+              <img src="./assets/portrait.jpg" alt="Mohammed Shafeeque">
+              <div style="padding: 24px; background: #ffffff;">
+                <h3 style="font-size: 18px; margin-bottom: 4px;">Mohammed Shafeeque</h3>
+                <p style="font-size: 13px; color: var(--gold-dark); font-weight: 600; text-transform: uppercase;">Jewellery CAD Specialist &amp; 3D Visualizer</p>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">📍 Kerala, India • Remote &amp; Global Contracts</div>
+              </div>
+            </div>
+
+            <div>
+              <h2 style="font-family: var(--font-serif); font-size: 32px; margin-bottom: 20px;">Precision Engineering Meets Luxury Aesthetics</h2>
+              <p style="font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+                I hold over 8 years of specialized experience in the international fine jewellery sector, working alongside master bench jewelers, retail ateliers, and modern manufacturers.
+              </p>
+              <p style="font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 24px;">
+                My philosophy centers on <strong>manufacturing awareness</strong>: designing jewellery in CAD that not only renders gorgeously for marketing, but also casts cleanly, sets effortlessly at the bench, and endures a lifetime of daily wear.
+              </p>
+
+              <h4 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 30px; margin-bottom: 12px;">Core Design Principles</h4>
+              <div class="about-pillars">
+                <div class="pillar-item">Precision &amp; Micron Accuracy</div>
+                <div class="pillar-item">Manufacturing Awareness</div>
+                <div class="pillar-item">Stone Setting Feasibility</div>
+                <div class="pillar-item">Weight &amp; Metal Optimization</div>
+                <div class="pillar-item">Rapid Turnaround &amp; Communication</div>
+                <div class="pillar-item">Reliable STL/CAD Delivery</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience Timeline -->
+          <div style="margin: 80px 0;">
+            <div class="section-tag">Career Journey</div>
+            <h2 class="section-title" style="margin-bottom: 40px;">Experience Timeline</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+              <div style="background: rgba(255,255,255,0.92); padding: 32px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                <div style="font-size: 12px; font-weight: 700; color: var(--gold-dark); text-transform: uppercase;">8+ Years • Senior Specialist</div>
+                <h3 style="font-size: 20px; font-weight: 700; margin: 8px 0 14px;">Jewellery CAD &amp; Production Design</h3>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+                  End-to-end development of 3D CAD models for bridal rings, intricate necklaces, heavy men's rings, and gemstone suites. Authoring production-ready 3DM and STL files tailored to resin 3D printing and investment casting.
+                </p>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.92); padding: 32px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                <div style="font-size: 12px; font-weight: 700; color: var(--gold-dark); text-transform: uppercase;">2+ Years • Advanced Detailing</div>
+                <h3 style="font-size: 20px; font-weight: 700; margin: 8px 0 14px;">ZBrush Organic &amp; Sculptural Modelling</h3>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+                  Organic floral filigree, mythological figures, animal motifs, and relief textures that push beyond standard geometric NURBS constraints, fully integrated into CAD stone-setting shells.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6-Step Workflow -->
+          <div style="margin: 80px 0 100px;">
+            <div class="section-tag">Process</div>
+            <h2 class="section-title">The 6-Step Design Workflow</h2>
+            
+            <div class="workflow-grid">
+              <div class="workflow-card">
+                <div class="workflow-num">01</div>
+                <div class="workflow-step-title">Concept &amp; Brief</div>
+                <p class="workflow-step-desc">Client provides sketches, reference imagery, stone dimensions, and desired metal specifications.</p>
+              </div>
+              <div class="workflow-card">
+                <div class="workflow-num">02</div>
+                <div class="workflow-step-title">Design Development</div>
+                <p class="workflow-step-desc">Ergonomics, finger fit, proportions, and gemstone balance are mapped out carefully in 2D/3D sketches.</p>
+              </div>
+              <div class="workflow-card">
+                <div class="workflow-num">03</div>
+                <div class="workflow-step-title">3D CAD Modelling</div>
+                <p class="workflow-step-desc">Precise NURBS construction in Rhino/MatrixGold, applying precise wall thickness and prong seats.</p>
+              </div>
+              <div class="workflow-card">
+                <div class="workflow-num">04</div>
+                <div class="workflow-step-title">Technical Review</div>
+                <p class="workflow-step-desc">Verification of minimum casting wall thicknesses, shrinkage allowances, and stone security tolerances.</p>
+              </div>
+              <div class="workflow-card">
+                <div class="workflow-num">05</div>
+                <div class="workflow-step-title">Photorealistic Renders</div>
+                <p class="workflow-step-desc">Studio rendering with KeyShot for client sign-off, marketing previews, and digital catalogues.</p>
+              </div>
+              <div class="workflow-card">
+                <div class="workflow-num">06</div>
+                <div class="workflow-step-title">Final Delivery</div>
+                <p class="workflow-step-desc">Production STL files for 3D printing/casting, original 3DM CAD files, and high-res visualization assets.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==============================================
+           PAGE 3: PORTFOLIO (WITH CATEGORY FILTERS)
+      =============================================== -->
+      <section id="page-portfolio" class="page-section">
+        <div class="page-header">
+          <div class="container">
+            <span class="hero-badge">Curated Gallery</span>
+            <h1 class="page-title">Selected Portfolio</h1>
+            <p class="page-desc">Explore a selection of fine jewellery CAD, bespoke design, high-end rendering, and visualization projects.</p>
+            
+            <!-- Category Filters -->
+            <div class="filter-tabs">
+              <button class="filter-btn active" onclick="filterPortfolio('all', this)">All</button>
+              <button class="filter-btn" onclick="filterPortfolio('rings', this)">Rings</button>
+              <button class="filter-btn" onclick="filterPortfolio('pendants', this)">Pendants</button>
+              <button class="filter-btn" onclick="filterPortfolio('bangles', this)">Bangles &amp; Bracelets</button>
+              <button class="filter-btn" onclick="filterPortfolio('cad', this)">CAD Models</button>
+              <button class="filter-btn" onclick="filterPortfolio('rendering', this)">Rendering</button>
+              <button class="filter-btn" onclick="filterPortfolio('animation', this)">Animation</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="container" style="padding-bottom: 90px;">
+          <div class="works-grid" id="portfolio-gallery-grid">
+            <!-- Item 1 -->
+            <div class="project-card portfolio-item" data-category="rings cad rendering" onclick="openProjectModal('halo-ring')">
+              <div class="project-img-wrap">
+                <img src="./assets/diamond_halo_ring.jpg" alt="Diamond Halo Ring" class="project-img">
+              </div>
+              <div class="project-info">
+                <div class="project-name">Diamond Halo Ring</div>
+                <div class="project-cat">Rings • CAD + KeyShot Render</div>
+                <div class="project-desc">Micro-pave round brilliant engagement ring with cathedral gallery.</div>
+                <div class="project-action">View Case Study →</div>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="project-card portfolio-item" data-category="pendants cad rendering" onclick="openProjectModal('emerald-pendant')">
+              <div class="project-img-wrap">
+                <img src="./assets/royal_emerald_pendant.jpg" alt="Royal Emerald Pendant" class="project-img">
+              </div>
+              <div class="project-info">
+                <div class="project-name">Royal Emerald Pendant</div>
+                <div class="project-cat">Pendants • 18K Filigree</div>
+                <div class="project-desc">Pear-shaped vivid emerald in handmade style filigree basket.</div>
+                <div class="project-action">View Case Study →</div>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="project-card portfolio-item" data-category="rings animation cad" onclick="openProjectModal('filigree-crown')">
+              <div class="project-img-wrap">
+                <img src="./ezgif-frame-080.jpg" alt="Filigree Crown Ring" class="project-img">
+              </div>
+              <div class="project-info">
+                <div class="project-name">Filigree Crown Ring</div>
+                <div class="project-cat">Rings • 360° Animation</div>
+                <div class="project-desc">Interactive 179-frame smooth rotation animation of sculptural crown ring.</div>
+                <div class="project-action">View Case Study →</div>
+              </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="project-card portfolio-item" data-category="bangles cad" onclick="openProjectModal('filigree-bangle')">
+              <div class="project-img-wrap">
+                <img src="./assets/gold_filigree_bangle.jpg" alt="Gold Filigree Bangle" class="project-img">
+              </div>
+              <div class="project-info">
+                <div class="project-name">Royal Filigree Bangle</div>
+                <div class="project-cat">Bangles • 18K Yellow Gold CAD</div>
+                <div class="project-desc">Precision hinged clasp and internal weight-saving honeycombs.</div>
+                <div class="project-action">View Case Study →</div>
+              </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="project-card portfolio-item" data-category="rings rendering" onclick="openProjectModal('sapphire-ring')">
+              <div class="project-img-wrap">
+                <img src="./assets/sapphire_cocktail_ring.jpg" alt="Sapphire Cocktail Ring" class="project-img">
+              </div>
+              <div class="project-info">
+                <div class="project-name">Sapphire Cocktail Ring</div>
+                <div class="project-cat">Rings • Art Deco Rendering</div>
+                <div class="project-desc">Royal blue oval sapphire haloed by tapered diamond baguettes.</div>
+                <div class="project-action">View Case Study →</div>
+              </div>
+            </div>
+
+            <!-- Item 6: Technical Blueprint CAD -->
+            <div class="project-card portfolio-item" data-category="cad" onclick="openProjectModal('technical-blueprint')">
+              <div class="project-img-wrap">
+                <img src="./assets/cad_technical_views.jpg" alt="Technical 4-View CAD" class="project-img">
+              </div>
+              <div class="project-info">
+                <div class="project-name">Orthographic Technical CAD</div>
+                <div class="project-cat">CAD • Rhino / MatrixGold Viewports</div>
+                <div class="project-desc">Front, Side, Top, and Perspective dimensions with micron tolerances.</div>
+                <div class="project-action">View Case Study →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==============================================
+           PAGE 4: SERVICES
+      =============================================== -->
+      <section id="page-services" class="page-section">
+        <div class="page-header">
+          <div class="container">
+            <span class="hero-badge">Specialized Offerings</span>
+            <h1 class="page-title">Jewellery CAD &amp; 3D Services</h1>
+            <p class="page-desc">Comprehensive production modelling, photorealistic visualization, and technical engineering for global jewellery designers and manufacturers.</p>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="services-full-grid">
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">Jewellery CAD Design</h3>
+                <p class="service-full-desc">Custom production-ready 3D models developed from rough sketches, concept moodboards, or loose gem inventories.</p>
+                <ul class="service-feature-list">
+                  <li>Direct Rhino &amp; MatrixGold geometry</li>
+                  <li>Calculated stone prong heights</li>
+                  <li>Proper casting tapers &amp; drafts</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('Jewellery CAD Design')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">3D Jewellery Modelling</h3>
+                <p class="service-full-desc">High-detail modelling across rings, ear jackets, chandeliers, tennis bracelets, eternity bands, and pendants.</p>
+                <ul class="service-feature-list">
+                  <li>Full collection consistency</li>
+                  <li>Microscopic prong and bead detailing</li>
+                  <li>Stone layout maps for setters</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('3D Jewellery Modelling')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">Production-Ready CAD</h3>
+                <p class="service-full-desc">Dedicated engineering to ensure casting yield, structural durability, ergonomic comfort, and finishing access.</p>
+                <ul class="service-feature-list">
+                  <li>Pre-shrinkage scaling</li>
+                  <li>Wall thickness verification (&gt;0.8mm)</li>
+                  <li>Metal weight calculation</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('Production-Ready CAD')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">Sketch to CAD</h3>
+                <p class="service-full-desc">Transforming pencil drawings or smartphone photos into mathematically precise, symmetry-locked 3D CAD files.</p>
+                <ul class="service-feature-list">
+                  <li>Proportion alignment</li>
+                  <li>Gemstone size verification</li>
+                  <li>Client sign-off renders</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('Sketch to CAD')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">Photorealistic Rendering</h3>
+                <p class="service-full-desc">KeyShot rendering with physically accurate diamond dispersion, spectral fire, and high-polish metal luster.</p>
+                <ul class="service-feature-list">
+                  <li>Clean white &amp; studio environments</li>
+                  <li>E-commerce &amp; catalogue ready</li>
+                  <li>Multiple precious metal variants</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('Photorealistic Rendering')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">360° Animation</h3>
+                <p class="service-full-desc">Smooth turntable animation sequences that allow web visitors to inspect jewellery from every angle.</p>
+                <ul class="service-feature-list">
+                  <li>Interactive scroll sequences</li>
+                  <li>High-res MP4/WebM video exports</li>
+                  <li>Instagram &amp; social media clips</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('360° Animation')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">Product Visualization</h3>
+                <p class="service-full-desc">Multi-angle orthographic presentation sheets displaying dimensions, stone breakdowns, and top/side views.</p>
+                <ul class="service-feature-list">
+                  <li>Spec sheets for manufacturing</li>
+                  <li>Client pitch decks</li>
+                  <li>Stone carats &amp; piece counts</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('Product Visualization')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">CAD Revision &amp; Modification</h3>
+                <p class="service-full-desc">Refining existing customer 3DM or STL files to adjust finger sizes, remount alternative stones, or repair mesh holes.</p>
+                <ul class="service-feature-list">
+                  <li>Ring resizing adjustments</li>
+                  <li>Stone conversion (oval to emerald cut)</li>
+                  <li>Hollow weight-reduction cavities</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('CAD Revision &amp; Modification')">Request Service →</button>
+            </div>
+
+            <div class="service-full-card">
+              <div>
+                <h3 class="service-full-title">3D Printing Files (STL)</h3>
+                <p class="service-full-desc">Water-tight, manifold STL files sliced and checked for SLA, DLP, and wax 3D printer deposition without errors.</p>
+                <ul class="service-feature-list">
+                  <li>Zero naked edges / non-manifold meshes</li>
+                  <li>Sprue attachment placements</li>
+                  <li>Support generation guidance</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline" onclick="requestService('3D Printing Files')">Request Service →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==============================================
+           PAGE 5: WORKS (CAPABILITIES & BEFORE/AFTER)
+      =============================================== -->
+      <section id="page-works" class="page-section">
+        <div class="page-header">
+          <div class="container">
+            <span class="hero-badge">Production Showcase</span>
+            <h1 class="page-title">Works &amp; Case Studies</h1>
+            <p class="page-desc">See the real engineering behind the jewellery: technical wireframes, casting designs, and before-and-after transformations.</p>
+          </div>
+        </div>
+
+        <div class="container" style="padding-bottom: 90px;">
+          <!-- Interactive Before & After -->
+          <div class="before-after-box">
+            <div style="text-align: center; margin-bottom: 24px;">
+              <span class="section-tag">Interactive Demonstration</span>
+              <h2 style="font-family: var(--font-serif); font-size: 30px;">Concept to Production Workflow</h2>
+              <p style="font-size: 14px; color: var(--text-muted); margin-top: 6px;">Select a stage below to see how a piece evolves from technical CAD into a photorealistic luxury master render.</p>
+            </div>
+
+            <div class="ba-nav">
+              <button class="ba-tab active" onclick="switchBAStage('cad', this)">01 — Technical CAD Wireframe</button>
+              <button class="ba-tab" onclick="switchBAStage('render', this)">02 — Final KeyShot Render</button>
+              <button class="ba-tab" onclick="switchBAStage('animation', this)">03 — 360° Turntable View</button>
+            </div>
+
+            <div class="ba-display">
+              <img id="ba-image" src="./assets/cad_technical_views.jpg" alt="Technical CAD Orthographic Viewports">
+              <div class="ba-caption" id="ba-caption">Stage 1: Rhino/Matrix 4-View Technical CAD Wireframe with precise stone &amp; shank dimensions</div>
+            </div>
+          </div>
+
+          <!-- Production Breakdown Categories -->
+          <div style="margin-top: 60px;">
+            <h2 class="section-title" style="margin-bottom: 30px;">Production Discipline Breakdown</h2>
+            <div class="works-grid">
+              <div class="project-card" onclick="openProjectModal('halo-ring')">
+                <div class="project-img-wrap"><img src="./assets/diamond_halo_ring.jpg" class="project-img"></div>
+                <div class="project-info">
+                  <div class="project-name">CAD Works</div>
+                  <div class="project-desc">Micro-claw pave setting tolerances and cathedral gallery reinforcement.</div>
+                </div>
+              </div>
+              <div class="project-card" onclick="openProjectModal('sapphire-ring')">
+                <div class="project-img-wrap"><img src="./assets/sapphire_cocktail_ring.jpg" class="project-img"></div>
+                <div class="project-info">
+                  <div class="project-name">Rendering Works</div>
+                  <div class="project-desc">Physically accurate gem dispersion and fine brush metal lighting.</div>
+                </div>
+              </div>
+              <div class="project-card" onclick="openProjectModal('emerald-pendant')">
+                <div class="project-img-wrap"><img src="./assets/royal_emerald_pendant.jpg" class="project-img"></div>
+                <div class="project-info">
+                  <div class="project-name">Design Works</div>
+                  <div class="project-desc">Bespoke Victorian-inspired scrollwork created from client references.</div>
+                </div>
+              </div>
+              <div class="project-card" onclick="openProjectModal('filigree-crown')">
+                <div class="project-img-wrap"><img src="./ezgif-frame-179.jpg" class="project-img"></div>
+                <div class="project-info">
+                  <div class="project-name">Animation Works</div>
+                  <div class="project-desc">179 frame seamless looping interactive product demonstration.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==============================================
+           PAGE 6: REVIEWS
+      =============================================== -->
+      <section id="page-reviews" class="page-section">
+        <div class="page-header">
+          <div class="container">
+            <span class="hero-badge">Verified Testimonials</span>
+            <h1 class="page-title">Client Reviews</h1>
+            <p class="page-desc">Feedback from international jewellery brands, custom ateliers, and retail designers who trust Mohammed for precision CAD.</p>
+            
+            <div class="reviews-tabs">
+              <button class="filter-btn active" onclick="filterReviews('all', this)">All</button>
+              <button class="filter-btn" onclick="filterReviews('cad', this)">CAD Quality</button>
+              <button class="filter-btn" onclick="filterReviews('comm', this)">Communication</button>
+              <button class="filter-btn" onclick="filterReviews('render', this)">Rendering</button>
+              <button class="filter-btn" onclick="filterReviews('delivery', this)">Delivery Speed</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="reviews-full-grid" id="reviews-container">
+            <div class="review-card" data-category="cad comm">
+              <div>
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Mohammed is our go-to CAD designer for all complex custom orders. He understands gemstone clearances instinctively. We never have stone breakage or casting shrinkage issues."</p>
+              </div>
+              <div>
+                <div class="review-author">Bespoke Bridal Atelier</div>
+                <div class="review-role">London, United Kingdom • CAD Quality</div>
+              </div>
+            </div>
+
+            <div class="review-card" data-category="render delivery">
+              <div>
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"The KeyShot renders Mohammed provided for our new collection helped us secure pre-orders from distributors before we had cast the first piece of gold. Rapid delivery and superb communication."</p>
+              </div>
+              <div>
+                <div class="review-author">High Jewelry Manufacturer</div>
+                <div class="review-role">Antwerp, Belgium • Rendering &amp; Delivery</div>
+              </div>
+            </div>
+
+            <div class="review-card" data-category="cad delivery">
+              <div>
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Cleanest Rhino files I've ever opened. Solid boolean unions, perfectly drafted prongs, and zero mesh errors in Magics. Cut our 3D printing prep time by 80%."</p>
+              </div>
+              <div>
+                <div class="review-author">Fine Diamond Jewelry Brand</div>
+                <div class="review-role">New York, USA • CAD Accuracy</div>
+              </div>
+            </div>
+
+            <div class="review-card" data-category="comm render">
+              <div>
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Super easy to communicate with via WhatsApp and email. Understood our rough napkin sketches and turned them into stunning 3D CAD files within 2 days."</p>
+              </div>
+              <div>
+                <div class="review-author">Custom Gemstone Studio</div>
+                <div class="review-role">Dubai, UAE • Communication</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==============================================
+           PAGE 7: CONTACT
+      =============================================== -->
+      <section id="page-contact" class="page-section">
+        <div class="page-header">
+          <div class="container">
+            <span class="hero-badge">Get in Touch</span>
+            <h1 class="page-title">Let's Work Together</h1>
+            <p class="page-desc">Have a jewellery concept, CAD requirement, or visualization project? Get in touch and let's discuss your project.</p>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="contact-grid">
+            <!-- Contact Information Panel -->
+            <div class="contact-info-panel">
+              <h2 style="font-family: var(--font-serif); font-size: 28px; margin-bottom: 12px;">Contact Information</h2>
+              <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+                Whether you need a single custom engagement ring CAD file or an entire season's collection modelled and rendered, I am available for freelance and contract work.
+              </p>
+
+              <div class="contact-info-list">
+                <div>
+                  <div class="contact-item-title">Designer</div>
+                  <div class="contact-item-value">Mohammed Shafeeque</div>
+                </div>
+                <div>
+                  <div class="contact-item-title">Email</div>
+                  <div class="contact-item-value"><a href="mailto:shafeequecad@gmail.com">shafeequecad@gmail.com</a></div>
+                </div>
+                <div>
+                  <div class="contact-item-title">Phone / WhatsApp</div>
+                  <div class="contact-item-value"><a href="https://wa.me/919876543210" target="_blank">+91 98765 43210</a></div>
+                </div>
+                <div>
+                  <div class="contact-item-title">Location</div>
+                  <div class="contact-item-value">Kerala, India</div>
+                </div>
+                <div>
+                  <div class="contact-item-title">Availability</div>
+                  <div class="contact-item-value">Freelance • Remote • Contract</div>
+                </div>
+              </div>
+
+              <div style="padding-top: 20px; border-top: 1px solid var(--border);">
+                <div class="contact-item-title" style="margin-bottom: 12px;">Social &amp; Portfolios</div>
+                <div style="display: flex; gap: 16px;">
+                  <a href="https://behance.net" target="_blank" style="text-decoration:none; font-weight:700; color:var(--text-main); font-size:13px;">Behance ↗</a>
+                  <a href="https://linkedin.com" target="_blank" style="text-decoration:none; font-weight:700; color:var(--text-main); font-size:13px;">LinkedIn ↗</a>
+                  <a href="https://instagram.com" target="_blank" style="text-decoration:none; font-weight:700; color:var(--text-main); font-size:13px;">Instagram ↗</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Enquiry Form -->
+            <div class="contact-form-panel">
+              <h2 style="font-family: var(--font-serif); font-size: 26px; margin-bottom: 8px;">Project Enquiry</h2>
+              <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 28px;">Fill in the details below and I will respond with a quote and timeline within 24 hours.</p>
+
+              <form id="enquiry-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="form-name">Name *</label>
+                    <input type="text" id="form-name" class="form-control" placeholder="Your name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="form-email">Email *</label>
+                    <input type="email" id="form-email" class="form-control" placeholder="name@company.com" required>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="form-phone">Phone / WhatsApp</label>
+                    <input type="tel" id="form-phone" class="form-control" placeholder="+1 (555) 000-0000">
+                  </div>
+                  <div class="form-group">
+                    <label for="form-company">Company / Brand</label>
+                    <input type="text" id="form-company" class="form-control" placeholder="Your jewellery brand">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="form-service">Project Type *</label>
+                  <select id="form-service" class="form-control" required>
+                    <option value="" disabled selected>Select service required...</option>
+                    <option value="Jewellery CAD Design">Jewellery CAD Design</option>
+                    <option value="Jewellery Design">Jewellery Design</option>
+                    <option value="3D Modelling">3D Jewellery Modelling</option>
+                    <option value="Rendering">Photorealistic Rendering</option>
+                    <option value="360° Animation">360° Turntable Animation</option>
+                    <option value="Sketch to CAD">Sketch to CAD Conversion</option>
+                    <option value="Production-Ready CAD">Production-Ready CAD &amp; STL</option>
+                    <option value="Other">Other / Full Collection</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="form-desc">Project Description *</label>
+                  <textarea id="form-desc" class="form-control" placeholder="Describe the jewellery piece, stone sizes, target metal, and specific requirements..." required></textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="form-deadline">Expected Deadline</label>
+                    <input type="date" id="form-deadline" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="form-budget">Budget Range</label>
+                    <select id="form-budget" class="form-control">
+                      <option value="Flexible">Flexible / Open</option>
+                      <option value="$300 - $800">$300 – $800 (Single piece CAD)</option>
+                      <option value="$800 - $2,000">$800 – $2,000 (Detailed set or rendering)</option>
+                      <option value="$2,000 - $5,000+">$2,000 – $5,000+ (Full collection)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark" style="width: 100%; padding: 16px; margin-top: 10px;">
+                  <span>Send Project Enquiry</span>
+                  <span>→</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Global Footer (Consistent on Every Page) -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-bio">
+            <a class="logo" onclick="navigateTo('/')">
+              <div class="logo-mark">MS</div>
+              <div class="logo-text">
+                <span class="logo-name">Mohammed Shafeeque</span>
+                <span class="logo-sub">Jewellery CAD Designer</span>
+              </div>
+            </a>
+            <p>Specializing in converting sketches, references, and concepts into production-ready 3D jewellery models, manufacturing files, and photorealistic KeyShot visualizations.</p>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Quick Links</div>
+            <ul class="footer-links">
+              <li><a onclick="navigateTo('/')">Home</a></li>
+              <li><a onclick="navigateTo('/about')">About Me</a></li>
+              <li><a onclick="navigateTo('/portfolio')">Portfolio</a></li>
+              <li><a onclick="navigateTo('/services')">Services</a></li>
+              <li><a onclick="navigateTo('/works')">Works</a></li>
+              <li><a onclick="navigateTo('/reviews')">Reviews</a></li>
+              <li><a onclick="navigateTo('/contact')">Contact</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Services</div>
+            <ul class="footer-links">
+              <li><a onclick="navigateTo('/services')">Jewellery CAD Design</a></li>
+              <li><a onclick="navigateTo('/services')">3D Modelling</a></li>
+              <li><a onclick="navigateTo('/services')">Photorealistic Rendering</a></li>
+              <li><a onclick="navigateTo('/services')">360° Animation</a></li>
+              <li><a onclick="navigateTo('/services')">Sketch to CAD</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Contact &amp; Location</div>
+            <ul class="footer-links">
+              <li><span>📧 shafeequecad@gmail.com</span></li>
+              <li><span>📱 +91 98765 43210</span></li>
+              <li><span>📍 Kerala, India</span></li>
+              <li><span style="color:var(--gold-dark); font-weight:600;">• Available Worldwide</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div>© 2026 Mohammed Shafeeque. All Rights Reserved.</div>
+          <div style="display:flex; gap:20px;">
+            <a href="https://behance.net" target="_blank" style="color:inherit; text-decoration:none;">Behance</a>
+            <a href="https://linkedin.com" target="_blank" style="color:inherit; text-decoration:none;">LinkedIn</a>
+            <a href="https://instagram.com" target="_blank" style="color:inherit; text-decoration:none;">Instagram</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ==============================================
+       INDIVIDUAL PROJECT MODAL (COMPLETE CASE STUDY)
+  =============================================== -->
+  <div id="project-modal" onclick="handleModalBackdropClick(event)">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeProjectModal()">✕</button>
+      
+      <span class="hero-badge" id="modal-tag">Project Overview</span>
+      <h2 id="modal-title" style="font-family: var(--font-serif); font-size: 34px; margin: 6px 0 12px;">Diamond Halo Ring</h2>
+      <p id="modal-subtitle" style="font-size: 15px; color: var(--text-muted); max-width: 700px;">Cathedral micro-pave diamond halo ring with millimeter-exact stone setting geometry.</p>
+
+      <img id="modal-hero-img" src="./assets/diamond_halo_ring.jpg" class="modal-hero-img" alt="Project Hero Render">
+
+      <!-- Technical Specifications Bar -->
+      <div class="modal-specs-bar">
+        <div class="modal-spec-item">
+          <span class="modal-spec-key">Category</span>
+          <span class="modal-spec-val" id="modal-spec-cat">Fine Jewellery Ring</span>
+        </div>
+        <div class="modal-spec-item">
+          <span class="modal-spec-key">Service</span>
+          <span class="modal-spec-val" id="modal-spec-service">CAD + Photorealistic Rendering</span>
+        </div>
+        <div class="modal-spec-item">
+          <span class="modal-spec-key">Software</span>
+          <span class="modal-spec-val" id="modal-spec-software">Rhino 3D / KeyShot</span>
+        </div>
+        <div class="modal-spec-item">
+          <span class="modal-spec-key">Type</span>
+          <span class="modal-spec-val" id="modal-spec-type">Production Ready (STL + 3DM)</span>
+        </div>
+      </div>
+
+      <!-- Detailed Description -->
+      <div style="margin: 28px 0;">
+        <h3 style="font-size: 18px; margin-bottom: 10px;">Engineering &amp; Design Overview</h3>
+        <p id="modal-overview" style="font-size: 14.5px; color: var(--text-muted); line-height: 1.8;">
+          This project involved developing a production-ready CAD master file for an international luxury bridal atelier. The center collet is engineered with four tapered prongs angled at 30° to firmly seat a 1.50ct round diamond without light obstruction. The surrounding micro-pave halo contains 24 stones with scallop bead walls and pre-drilled azimuth holes for effortless setting and ultrasonic cleaning fluid circulation.
+        </p>
+      </div>
+
+      <!-- Multi-Angle Technical CAD Viewports -->
+      <div class="modal-cad-views">
+        <h3 style="font-size: 18px; margin-bottom: 6px;">Technical Orthographic CAD Viewports</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Front, Top, Side, and 3D Wireframe dimensions generated in Rhinoceros / MatrixGold.</p>
+        <div class="modal-cad-display">
+          <img src="./assets/cad_technical_views.jpg" alt="Technical CAD Orthographic Blueprint">
+        </div>
+      </div>
+
+      <!-- Modal Bottom Actions -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 24px; margin-top: 40px;">
+        <button class="btn btn-outline" onclick="closeProjectModal()">← Back to Gallery</button>
+        <button class="btn btn-dark" id="modal-next-btn" onclick="nextProject()">Next Project →</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==============================================
+       SCRIPTS: CLIENT ROUTER, 3D SCROLL ENGINE & LOGIC
+  =============================================== -->
+  <script>
+    /* ----------------------------------------------------
+       1. CLIENT SPA ROUTER (Home, About, Portfolio, etc.)
+    ---------------------------------------------------- */
+    const routes = {
+      '/': 'page-home',
+      '/about': 'page-about',
+      '/portfolio': 'page-portfolio',
+      '/services': 'page-services',
+      '/works': 'page-works',
+      '/reviews': 'page-reviews',
+      '/contact': 'page-contact'
+    };
+
+    function navigateTo(path) {
+      if (!routes[path]) path = '/';
+
+      // Update URL without reload
+      try {
+        window.history.pushState({ path }, '', path);
+      } catch (e) {
+        window.location.hash = path;
+      }
+
+      renderRoute(path);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderRoute(path) {
+      const sectionId = routes[path] || 'page-home';
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+      const activeSec = document.getElementById(sectionId);
+      if (activeSec) activeSec.classList.add('active');
+
+      // Update active nav link
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('data-path') === path) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    window.addEventListener('popstate', (e) => {
+      const path = (e.state && e.state.path) || window.location.pathname || '/';
+      renderRoute(path);
+    });
+
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobile-drawer');
+      drawer.classList.toggle('open');
+    }
+
+    /* ----------------------------------------------------
+       3. PORTFOLIO FILTERING
+    ---------------------------------------------------- */
+    function filterPortfolio(category, btn) {
+      document.querySelectorAll('.filter-tabs .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const items = document.querySelectorAll('.portfolio-item');
+      items.forEach(item => {
+        const itemCat = item.getAttribute('data-category') || '';
+        if (category === 'all' || itemCat.includes(category)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    /* ----------------------------------------------------
+       4. REVIEWS FILTERING
+    ---------------------------------------------------- */
+    function filterReviews(category, btn) {
+      document.querySelectorAll('.reviews-tabs .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const reviews = document.querySelectorAll('#reviews-container .review-card');
+      reviews.forEach(card => {
+        const cats = card.getAttribute('data-category') || '';
+        if (category === 'all' || cats.includes(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    /* ----------------------------------------------------
+       5. BEFORE & AFTER STAGE SWITCHER
+    ---------------------------------------------------- */
+    const baStages = {
+      cad: {
+        src: './assets/cad_technical_views.jpg',
+        caption: 'Stage 1: Rhino/Matrix 4-View Technical CAD Wireframe with precise stone & shank dimensions'
+      },
+      render: {
+        src: './assets/diamond_halo_ring.jpg',
+        caption: 'Stage 2: Final Photorealistic KeyShot Render with high-polish platinum luster & diamond spectral dispersion'
+      },
+      animation: {
+        src: './ezgif-frame-080.jpg',
+        caption: 'Stage 3: 360° Turntable Animation showcasing optical reflection and gemstone pavilion clearance'
+      }
+    };
+
+    function switchBAStage(stage, btn) {
+      document.querySelectorAll('.ba-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const data = baStages[stage];
+      if (data) {
+        document.getElementById('ba-image').src = data.src;
+        document.getElementById('ba-caption').innerText = data.caption;
+      }
+    }
+
+    /* ----------------------------------------------------
+       6. INDIVIDUAL PROJECT CASE STUDY DATA & MODAL
+    ---------------------------------------------------- */
+    const projectsData = [
+      {
+        id: 'halo-ring',
+        title: 'Diamond Halo Cathedral Ring',
+        subtitle: 'Micro-pave halo engagement ring with CAD tolerances for cast-in-place diamond setting.',
+        img: './assets/diamond_halo_ring.jpg',
+        category: 'Rings / Bridal',
+        service: 'Jewellery CAD + KeyShot',
+        software: 'Rhino 3D / MatrixGold',
+        type: 'Production CAD & Rendering',
+        overview: 'Developed for an international luxury bridal collection. Features a 1.50ct round brilliant center diamond with an engineered micro-pave halo. The under-gallery is vaulted into a delicate cathedral arch, ensuring structural integrity while keeping the total metal weight under 4.2g platinum.'
+      },
+      {
+        id: 'emerald-pendant',
+        title: 'Royal Emerald Filigree Pendant',
+        subtitle: 'Bespoke 18K yellow gold filigree scrollwork pendant with vivid pear emerald.',
+        img: './assets/royal_emerald_pendant.jpg',
+        category: 'Pendants & Necklaces',
+        service: 'Bespoke CAD Modelling',
+        software: 'Rhino 3D / ZBrush',
+        type: 'Production 3DM + STL',
+        overview: 'Hand-sketch converted into full 3D CAD. The delicate filigree borders were generated with custom swept cross-sections to ensure flawless wax flow during investment casting. The central pear emerald is cradled by five micro-claw prongs with internal seat offsets.'
+      },
+      {
+        id: 'filigree-crown',
+        title: 'Imperial Filigree Crown Ring',
+        subtitle: '3D sculpt & 179-frame interactive turntable rotation sequence.',
+        img: './ezgif-frame-179.jpg',
+        category: 'Rings & High Jewellery',
+        service: 'Sculpt & 360° Animation',
+        software: 'Matrix / After Effects',
+        type: 'Interactive Visual Asset',
+        overview: 'An ornate tiara-style ring showcasing swirling acanthus filigree. Built in NURBS surfaces for mathematically perfect symmetry and continuous curvature. The full 179-frame scroll turntable powers the ambient 3D backdrop of this portfolio website.'
+      },
+      {
+        id: 'filigree-bangle',
+        title: 'Royal Filigree Hinged Bangle',
+        subtitle: 'Master hinged cuff bracelet featuring arabesque openwork and micro-pave diamonds.',
+        img: './assets/gold_filigree_bangle.jpg',
+        category: 'Bangles & Bracelets',
+        service: 'Mechanical CAD Engineering',
+        software: 'Rhino 3D / Matrix',
+        type: 'Master Model (Cast Ready)',
+        overview: 'Designed with a hidden spring tongue clasp and double safety catches. The hollowed inner channels save 22% in gold weight without compromising torsional rigidity. Contains 180 calibrated diamond seats with automatic pilot holes.'
+      },
+      {
+        id: 'sapphire-ring',
+        title: 'Art Deco Sapphire Cocktail Ring',
+        subtitle: 'Royal blue oval sapphire haloed by tapered diamond baguettes and hand milgrain.',
+        img: './assets/sapphire_cocktail_ring.jpg',
+        category: 'Cocktail Rings',
+        service: 'Photorealistic KeyShot Visualization',
+        software: 'KeyShot 11 / Rhino',
+        type: 'Commercial High-Res Render',
+        overview: 'Architectural geometry inspired by 1920s Art Deco Parisian high jewellery. Modelled with exact channel walls for tapered diamond baguettes and micro-beaded borders. Rendered in KeyShot with deep sapphire volume absorption.'
+      },
+      {
+        id: 'technical-blueprint',
+        title: 'Orthographic 4-View Technical CAD',
+        subtitle: 'Front, Side, Top, and 3D Wireframe dimension blueprints for manufacturing workshops.',
+        img: './assets/cad_technical_views.jpg',
+        category: 'Technical Blueprints',
+        service: 'Manufacturing Specification',
+        software: 'Rhino Viewport Engine',
+        type: 'Engineering Spec Sheet',
+        overview: 'Every custom design delivered includes high-resolution 4-view dimension sheets showing stone counts, prong depths, metal wall thicknesses, and ring sizes to eliminate errors at the casting house and setting bench.'
+      }
+    ];
+
+    let currentProjectIndex = 0;
+
+    function openProjectModal(projectId) {
+      const idx = projectsData.findIndex(p => p.id === projectId);
+      if (idx !== -1) currentProjectIndex = idx;
+      populateModal(projectsData[currentProjectIndex]);
+      document.getElementById('project-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+      document.getElementById('project-modal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function handleModalBackdropClick(e) {
+      if (e.target.id === 'project-modal') {
+        closeProjectModal();
+      }
+    }
+
+    function populateModal(p) {
+      document.getElementById('modal-title').innerText = p.title;
+      document.getElementById('modal-subtitle').innerText = p.subtitle;
+      document.getElementById('modal-hero-img').src = p.img;
+      document.getElementById('modal-spec-cat').innerText = p.category;
+      document.getElementById('modal-spec-service').innerText = p.service;
+      document.getElementById('modal-spec-software').innerText = p.software;
+      document.getElementById('modal-spec-type').innerText = p.type;
+      document.getElementById('modal-overview').innerText = p.overview;
+    }
+
+    function nextProject() {
+      currentProjectIndex = (currentProjectIndex + 1) % projectsData.length;
+      populateModal(projectsData[currentProjectIndex]);
+      document.getElementById('project-modal').scrollTop = 0;
+    }
+
+    function requestService(serviceName) {
+      navigateTo('/contact');
+      const select = document.getElementById('form-service');
+      if (select) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value === serviceName) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('form-name').value;
+      const service = document.getElementById('form-service').value;
+      alert(`Thank you, ${name}! Your enquiry for "${service}" has been received. Mohammed Shafeeque will review your specifications and contact you within 24 hours.`);
+      e.target.reset();
+    }
+
+    // Check initial route
+    const initialPath = window.location.pathname || '/';
+    renderRoute(routes[initialPath] ? initialPath : '/');
+  </script>
+</body>
+</html>
